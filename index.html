@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MGX Interactive</title>
+<meta name="description" content="Official website of MGX Interactive.">
+<meta property="og:title" content="MGX Interactive">
+<meta property="og:description" content="Official website of MGX Interactive.">
+<meta property="og:type" content="website">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0d0d0d;
+  color: #eaeaea;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.lang-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+}
+.lang-switch button {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all .2s;
+}
+.lang-switch button:hover { border-color: #666; color: #eaeaea; }
+.lang-switch button.active { background: #eaeaea; color: #0d0d0d; border-color: #eaeaea; }
+
+header {
+  padding: 100px 20px 60px;
+  text-align: center;
+  border-bottom: 1px solid #222;
+  background: linear-gradient(180deg, #161616 0%, #0d0d0d 100%);
+}
+header h1 {
+  font-size: 64px;
+  letter-spacing: 14px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+header p {
+  color: #888;
+  font-size: 18px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+.hero-btn {
+  display: inline-block;
+  background: #eaeaea;
+  color: #0d0d0d;
+  padding: 14px 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 16px;
+  transition: transform .15s, background .15s;
+  letter-spacing: 1px;
+}
+.hero-btn:hover { background: #fff; transform: scale(1.05); }
+main {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  width: 100%;
+}
+section {
+  margin-bottom: 70px;
+}
+section h2 {
+  font-size: 14px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 12px;
+}
+.card {
+  background: #161616;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 20px;
+}
+.card h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+.card p {
+  color: #aaa;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.card .meta {
+  color: #5686fe;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid #222;
+  color: #555;
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+.highlight { color: #eaeaea; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="lang-switch">
+  <button onclick="setLang('en')" id="btn-en" class="active">EN</button>
+  <button onclick="setLang('pl')" id="btn-pl">PL</button>
+</div>
+
+<header>
+  <h1>MGX INTERACTIVE</h1>
+  <p id="tagline">Games. Tools. Est. 2026.</p>
+  <a href="https://mgx-interactive.itch.io" class="hero-btn" target="_blank" id="btn-itch">VISIT OUR ITCH.IO</a>
+</header>
+
+<main>
+  <section>
+    <h2 id="sec-games">Games</h2>
+    <div class="card">
+      <div class="meta" id="fury-meta">Pseudo-3D Project</div>
+      <h3>MGX_FURY3D</h3>
+      <p id="fury-desc">It started with a dream of creating a game like GTA. However, I knew that writing such a massive game was impossible. So I made a smaller, pseudo-3D game, but the name "Fury" stayed. Now <span class="highlight">MGX_FURY3D</span> is a tribute to that dream – born from the ambition to do something big, even if we start with small steps.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="sec-engine">Future Engine</h2>
+    <div class="card">
+      <h3 id="engine-title">From Python to HTML</h3>
+      <p id="engine-desc">On <span class="highlight">October 20, 2026</span>, we are officially starting work on a new engine. Instead of using Python, we are switching to HTML to create full 3D games directly in the browser. This marks a new chapter for MGX Interactive.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="sec-name">The Name</h2>
+    <div class="card">
+      <h3 id="name-title">Why "MGX"?</h3>
+      <p id="name-desc">The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="sec-about">About the Studio</h2>
+    <div class="card">
+      <h3 id="about-title">Behind MGX</h3>
+      <p id="about-desc"><span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. Did you know that this is a <span class="highlight">one-person studio</span>? It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.</p>
+      <p id="about-pl"><span class="highlight">Fun fact:</span> Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 MGX Interactive. All rights reserved.</p>
+</footer>
+
+<script>
+const texts = {
+  en: {
+    tagline: "Games. Tools. Est. 2026.",
+    btnItch: "VISIT OUR ITCH.IO",
+    secGames: "Games",
+    furyMeta: "Pseudo-3D Project",
+    furyDesc: 'It started with a dream of creating a game like GTA. However, I knew that writing such a massive game was impossible. So I made a smaller, pseudo-3D game, but the name "Fury" stayed. Now <span class="highlight">MGX_FURY3D</span> is a tribute to that dream – born from the ambition to do something big, even if we start with small steps.',
+    secEngine: "Future Engine",
+    engineTitle: "From Python to HTML",
+    engineDesc: 'On <span class="highlight">October 20, 2026</span>, we are officially starting work on a new engine. Instead of using Python, we are switching to HTML to create full 3D games directly in the browser. This marks a new chapter for MGX Interactive.',
+    secName: "The Name",
+    nameTitle: 'Why "MGX"?',
+    nameDesc: 'The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.',
+    secAbout: "About the Studio",
+    aboutTitle: "Behind MGX",
+    aboutDesc: '<span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. Did you know that this is a <span class="highlight">one-person studio</span>? It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.',
+    aboutPl: '<span class="highlight">Fun fact:</span> Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.',
+    footer: "© 2026 MGX Interactive. All rights reserved."
+  },
+  pl: {
+    tagline: "Gry. Narzędzia. Od 2026.",
+    btnItch: "ODWIEDŹ NASZE ITCH.IO",
+    secGames: "Gry",
+    furyMeta: "Projekt Pseudo-3D",
+    furyDesc: 'Zaczęło się od marzenia o stworzeniu gry pokroju GTA. Wiedziałem jednak, że napisanie tak ogromnej gry jest niemożliwe. Zrobiłem więc mniejszą grę w pseudo-3D, ale nazwa "Fury" została. Teraz <span class="highlight">MGX_FURY3D</span> to hołd dla tamtego marzenia – zrodzony z ambicji, by zrobić coś wielkiego, choć zaczynamy od małych kroków.',
+    secEngine: "Przyszły Silnik",
+    engineTitle: "Z Pythona na HTML",
+    engineDesc: 'W dniu <span class="highlight">20 października 2026 r.</span> oficjalnie rozpoczynamy pracę nad nowym silnikiem. Zamiast używać Pythona, przesiadamy się na HTML, aby tworzyć pełnoprawne gry 3D bezpośrednio w przeglądarce. To otwiera nowy rozdział dla MGX Interactive.',
+    secName: "Nazwa",
+    nameTitle: 'Skąd "MGX"?',
+    nameDesc: 'Nazwa <span class="highlight">MGX</span> nie pochodzi od żadnej istniejącej strony ani firmy. Została wymyślona przez twórcę, <span class="highlight">Miloo</span> (znanego też jako Milex), jako oryginalny pomysł na studio. Dopiero później okazało się, że istnieją inne podmioty o nazwie "MGX" (np. firmy technologiczne, inwestycyjne czy filmowe). <span class="highlight">MGX Interactive</span> jest w pełni niezależnym projektem i nie ma z nimi nic wspólnego.',
+    secAbout: "O Studiu",
+    aboutTitle: "Za kulisami MGX",
+    aboutDesc: '<span class="highlight">MGX Interactive</span> zostało założone w 2026 roku przez <span class="highlight">Miloo</span>. Czy wiesz, że to studio tworzone przez <span class="highlight">jedną osobę</span>? To w pełni niezależny projekt, który stawia na lekkie, szybkie i prywatne rozwiązania. Tworzymy gry, eksperymentujemy z językami programowania i budujemy rzeczy, których sami chcemy używać. Bez telemetrii, bez wielkich korporacji, po prostu robimy swoje.',
+    aboutPl: '<span class="highlight">Ciekawostka:</span> Mimo że wszystko tutaj jest po angielsku, samo studio jest <span class="highlight">w 100% polskie</span>.',
+    footer: "© 2026 MGX Interactive. Wszelkie prawa zastrzeżone."
+  }
+};
+
+function setLang(lang) {
+  document.getElementById('tagline').innerHTML = texts[lang].tagline;
+  document.getElementById('btn-itch').innerHTML = texts[lang].btnItch;
+  document.getElementById('sec-games').innerHTML = texts[lang].secGames;
+  document.getElementById('fury-meta').innerHTML = texts[lang].furyMeta;
+  document.getElementById('fury-desc').innerHTML = texts[lang].furyDesc;
+  document.getElementById('sec-engine').innerHTML = texts[lang].secEngine;
+  document.getElementById('engine-title').innerHTML = texts[lang].engineTitle;
+  document.getElementById('engine-desc').innerHTML = texts[lang].engineDesc;
+  document.getElementById('sec-name').innerHTML = texts[lang].secName;
+  document.getElementById('name-title').innerHTML = texts[lang].nameTitle;
+  document.getElementById('name-desc').innerHTML = texts[lang].nameDesc;
+  document.getElementById('sec-about').innerHTML = texts[lang].secAbout;
+  document.getElementById('about-title').innerHTML = texts[lang].aboutTitle;
+  document.getElementById('about-desc').innerHTML = texts[lang].aboutDesc;
+  document.getElementById('about-pl').innerHTML = texts[lang].aboutPl;
+  document.querySelector('footer p').innerHTML = texts[lang].footer;
+  
+  document.getElementById('btn-en').classList.remove('active');
+  document.getElementById('btn-pl').classList.remove('active');
+  document.getElementById('btn-' + lang).classList.add('active');
+  
+  localStorage.setItem('mgx_lang', lang);
+}
+
+const savedLang = localStorage.getItem('mgx_lang') === 'pl' ? 'pl' : 'en';
+setLang(savedLang);
+</script>
+
+</body>
+</html>
