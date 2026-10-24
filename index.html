@@ -9,245 +9,743 @@
 <meta property="og:description" content="Official website of MGX Interactive.">
 <meta property="og:type" content="website">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #09090b;
+  --surface: rgba(18, 18, 22, 0.7);
+  --surface-hover: rgba(28, 28, 34, 0.9);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --text: #f4f4f5;
+  --text-dim: #a1a1aa;
+  --accent-red: #ff3b3b;
+  --accent-blue: #3b82f6;
+  --glow-red: rgba(255, 59, 59, 0.4);
+  --gold-start: #ffdf6b;
+  --gold-end: #d4a324;
+  --gold-glow: rgba(212, 163, 36, 0.3);
+}
+
 body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #0d0d0d;
-  color: #eaeaea;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 50% 0%, rgba(255, 59, 59, 0.08) 0%, transparent 60%);
+  color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
-.lang-switch {
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 0 0 rgba(244, 244, 245, 0.2); }
+  70% { box-shadow: 0 0 0 15px rgba(244, 244, 245, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(244, 244, 245, 0); }
+}
+
+.anim-hero { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+.view {
+  display: none;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.view.active {
+  display: block;
+}
+
+.controls {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 24px;
+  right: 24px;
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  z-index: 10;
+  align-items: center;
 }
-.lang-switch button {
+
+.lang-switch, .nav-switch {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.lang-switch button, .sound-toggle, .nav-switch button {
   background: transparent;
-  border: 1px solid #333;
-  color: #888;
-  padding: 6px 12px;
-  border-radius: 6px;
+  border: none;
+  color: var(--text-dim);
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 12px;
-  font-weight: bold;
-  transition: all .2s;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: all 0.25s ease;
 }
-.lang-switch button:hover { border-color: #666; color: #eaeaea; }
-.lang-switch button.active { background: #eaeaea; color: #0d0d0d; border-color: #eaeaea; }
+
+.lang-switch button:hover, .sound-toggle:hover, .nav-switch button:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-switch button.active, .nav-switch button.active {
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.sound-toggle {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 16px;
+}
+
+.sound-toggle.active {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
 
 header {
-  padding: 100px 20px 60px;
+  padding: 140px 20px 80px;
   text-align: center;
-  border-bottom: 1px solid #222;
-  background: linear-gradient(180deg, #161616 0%, #0d0d0d 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-header h1 {
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  filter: drop-shadow(0 0 30px var(--gold-glow));
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.logo-container:hover {
+  filter: drop-shadow(0 0 50px rgba(212, 163, 36, 0.6));
+  transform: scale(1.02);
+}
+
+.logo-text {
+  font-family: 'Arial Black', Impact, sans-serif;
   font-size: 64px;
-  letter-spacing: 14px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-header p {
-  color: #888;
-  font-size: 18px;
-  letter-spacing: 6px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 4px;
+  background: linear-gradient(180deg, var(--gold-start) 0%, var(--gold-end) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-transform: uppercase;
-  margin-bottom: 30px;
+  line-height: 1;
+  margin-bottom: 12px;
 }
+
+.logo-stars {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  margin-top: -5px;
+}
+
+.logo-stars svg {
+  width: 40px;
+  height: 40px;
+  fill: var(--gold-start);
+}
+
+header p {
+  color: var(--text-dim);
+  font-size: 14px;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  font-weight: 700;
+}
+
 .hero-btn {
   display: inline-block;
-  background: #eaeaea;
-  color: #0d0d0d;
-  padding: 14px 36px;
-  border-radius: 8px;
+  background: var(--text);
+  color: var(--bg);
+  padding: 18px 48px;
+  border-radius: 14px;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 16px;
-  transition: transform .15s, background .15s;
-  letter-spacing: 1px;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 2px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: glowPulse 3s infinite;
 }
-.hero-btn:hover { background: #fff; transform: scale(1.05); }
+
+.hero-btn:hover {
+  background: #ffffff;
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(255, 255, 255, 0.15);
+  animation: none;
+}
+
 main {
   flex: 1;
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 0 24px 120px;
   width: 100%;
 }
+
 section {
-  margin-bottom: 70px;
+  margin-bottom: 100px;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
 }
+
+section:nth-child(1) { animation-delay: 0.2s; }
+section:nth-child(2) { animation-delay: 0.4s; }
+
 section h2 {
-  font-size: 14px;
-  letter-spacing: 6px;
+  font-size: 12px;
+  letter-spacing: 10px;
   text-transform: uppercase;
-  color: #666;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #222;
-  padding-bottom: 12px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  text-align: center;
+  font-weight: 800;
 }
+
 .card {
-  background: #161616;
-  border: 1px solid #222;
-  border-radius: 12px;
-  padding: 32px;
-  margin-bottom: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 56px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
 }
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
 .card h3 {
-  font-size: 26px;
-  margin-bottom: 12px;
+  font-size: 32px;
+  margin-bottom: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--text);
 }
+
 .card p {
-  color: #aaa;
-  font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 20px;
+  color: var(--text-dim);
+  font-size: 16px;
+  line-height: 1.9;
+  margin-bottom: 24px;
 }
-.card .meta {
-  color: #5686fe;
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.tile {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px;
+  transition: all 0.3s ease;
+}
+
+.tile:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tile h4 {
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
+  color: var(--text);
+  margin-bottom: 16px;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 3px;
 }
+
+.tile p {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.highlight {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.red-brand {
+  color: var(--accent-red);
+  font-weight: 900;
+  text-shadow: 0 0 20px var(--glow-red);
+}
+
+.legal-text {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 2;
+}
+
+.legal-text h4 {
+  color: var(--text);
+  font-size: 20px;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  border-left: 3px solid var(--accent-blue);
+  padding-left: 16px;
+}
+
+.legal-text ul {
+  margin-left: 24px;
+  margin-bottom: 28px;
+}
+
+.legal-text li {
+  margin-bottom: 12px;
+}
+
+.legal-text p {
+  margin-bottom: 24px;
+}
+
 footer {
   text-align: center;
-  padding: 40px 20px;
-  border-top: 1px solid #222;
-  color: #555;
+  padding: 80px 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
   font-size: 13px;
-  letter-spacing: 1px;
   line-height: 1.8;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, transparent 100%);
 }
-.highlight { color: #eaeaea; font-weight: bold; }
+
+footer .studio {
+  color: #52525b;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin-top: 20px;
+  font-size: 11px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+footer .studio:hover {
+  color: var(--text);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 36px;
+    letter-spacing: 2px;
+  }
+  .logo-stars svg {
+    width: 24px;
+    height: 24px;
+  }
+  header p {
+    font-size: 12px;
+    letter-spacing: 5px;
+  }
+  .controls {
+    top: 16px;
+    right: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: calc(100% - 32px);
+  }
+  .card {
+    padding: 32px 24px;
+  }
+  .tile-grid {
+    grid-template-columns: 1fr;
+  }
+  .card h3 {
+    font-size: 24px;
+  }
+}
 </style>
 </head>
 <body>
 
-<div class="lang-switch">
-  <button onclick="setLang('en')" id="btn-en" class="active">EN</button>
-  <button onclick="setLang('pl')" id="btn-pl">PL</button>
+<div class="controls">
+  <button class="sound-toggle active" id="btn-sound" onclick="toggleSound()">SOUND ON</button>
+  <div class="nav-switch">
+    <button onclick="switchView('home')" id="btn-home" class="active">HOME</button>
+    <button onclick="switchView('terms')" id="btn-terms">TERMS</button>
+  </div>
+  <div class="lang-switch">
+    <button onclick="setLang('en')" id="btn-en" class="active">EN</button>
+    <button onclick="setLang('pl')" id="btn-pl">PL</button>
+  </div>
 </div>
 
-<header>
-  <h1>MGX INTERACTIVE</h1>
-  <p id="tagline">Games. Tools. Est. 2026.</p>
-  <a href="https://mgx-interactive.itch.io" class="hero-btn" target="_blank" id="btn-itch">VISIT OUR ITCH.IO</a>
+<header class="anim-hero">
+  <div class="logo-container">
+    <div class="logo-text">MGX INTERACTIVE</div>
+    <div class="logo-stars">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    </div>
+  </div>
+  <p id="tagline">Independent game studio. Est. 2026.</p>
+  <a href="https://mgx-interactive.itch.io" class="hero-btn" target="_blank" rel="noopener noreferrer" id="btn-itch">VISIT OUR ITCH.IO</a>
 </header>
 
 <main>
-  <section>
-    <h2 id="sec-games">Games</h2>
-    <div class="card">
-      <div class="meta" id="fury-meta">Pseudo-3D Project</div>
-      <h3>MGX_FURY3D</h3>
-      <p id="fury-desc">It started with a dream of creating a game like GTA. However, I knew that writing such a massive game was impossible. So I made a smaller, pseudo-3D game, but the name "Fury" stayed. Now <span class="highlight">MGX_FURY3D</span> is a tribute to that dream – born from the ambition to do something big, even if we start with small steps.</p>
-    </div>
-  </section>
+  <div id="view-home" class="view active">
+    <section>
+      <h2 id="sec-name">The Name</h2>
+      <div class="card">
+        <h3 id="name-title">Why "MGX"?</h3>
+        <p id="name-desc">The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.</p>
+      </div>
+    </section>
 
-  <section>
-    <h2 id="sec-engine">Future Engine</h2>
-    <div class="card">
-      <h3 id="engine-title">From Python to HTML</h3>
-      <p id="engine-desc">On <span class="highlight">October 20, 2026</span>, we are officially starting work on a new engine. Instead of using Python, we are switching to HTML to create full 3D games directly in the browser. This marks a new chapter for MGX Interactive.</p>
-    </div>
-  </section>
+    <section>
+      <h2 id="sec-about">About the Studio</h2>
+      <div class="card">
+        <h3 id="about-title">Behind MGX</h3>
+        <p id="about-desc"><span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.</p>
+        
+        <div class="tile-grid">
+          <div class="tile">
+            <h4 id="tile-solo-title">One Creator</h4>
+            <p id="tile-solo-desc">The entire <span class="red-brand">MGX Interactive brand</span> was founded and is managed by a single person.</p>
+          </div>
+          <div class="tile">
+            <h4 id="tile-pl-title">100% Polish</h4>
+            <p id="tile-pl-desc">Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-  <section>
-    <h2 id="sec-name">The Name</h2>
-    <div class="card">
-      <h3 id="name-title">Why "MGX"?</h3>
-      <p id="name-desc">The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.</p>
-    </div>
-  </section>
+  <div id="view-terms" class="view">
+    <section>
+      <h2>Terms of Use</h2>
+      <div class="card legal-text">
+        <p><strong>Version 1.1 — 2026</strong></p>
+        
+        <h4>1. About This Notice</h4>
+        <p>This document describes the general terms under which all projects released by MGX INTERACTIVE are made available to the public. It applies to every game, simulation, experiment, and file published under the MGX INTERACTIVE name. By downloading, installing, or using any MGX INTERACTIVE project, you confirm that you have read, understood, and accepted these terms.</p>
 
-  <section>
-    <h2 id="sec-about">About the Studio</h2>
-    <div class="card">
-      <h3 id="about-title">Behind MGX</h3>
-      <p id="about-desc"><span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. Did you know that this is a <span class="highlight">one-person studio</span>? It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.</p>
-      <p id="about-pl"><span class="highlight">Fun fact:</span> Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.</p>
-    </div>
-  </section>
+        <h4>2. Nature of Projects</h4>
+        <p>Every project released under MGX INTERACTIVE is provided "as is" — meaning exactly as it was published, with no promises, no guarantees, and no hidden obligations. Projects may be updated, changed, or removed at any time without notice.</p>
+
+        <h4>3. No Warranty</h4>
+        <p>MGX INTERACTIVE does not guarantee that any project will:</p>
+        <ul>
+          <li>work on every system or configuration,</li>
+          <li>run without errors or crashes,</li>
+          <li>be compatible with future versions of Windows, Unity, Python, or any other software,</li>
+          <li>meet your expectations.</li>
+        </ul>
+        <p>No warranty is provided, express or implied. You use these projects at your own discretion.</p>
+
+        <h4>4. No Liability</h4>
+        <p>MGX INTERACTIVE is not liable for any direct or indirect consequences of using these projects. This includes, but is not limited to:</p>
+        <ul>
+          <li>system instability,</li>
+          <li>data loss,</li>
+          <li>hardware issues,</li>
+          <li>interruptions in work or entertainment,</li>
+          <li>any other damage or loss.</li>
+        </ul>
+        <p>You are fully responsible for how you use the software on your own device.</p>
+
+        <h4>5. User Responsibility</h4>
+        <p>By downloading or using any MGX INTERACTIVE project, you agree that:</p>
+        <ul>
+          <li>you do so voluntarily,</li>
+          <li>you understand what you are downloading,</li>
+          <li>you take full responsibility for the consequences,</li>
+          <li>you will not hold MGX INTERACTIVE accountable for anything that happens as a result.</li>
+        </ul>
+
+        <h4>6. No Modification</h4>
+        <p>You may NOT:</p>
+        <ul>
+          <li>modify, edit, or alter any MGX INTERACTIVE project, its code, scripts, files, or assets,</li>
+          <li>decompile, reverse engineer, or extract the source code from any executable file,</li>
+          <li>create modified versions, patches, or derivative works based on MGX INTERACTIVE projects,</li>
+          <li>distribute modified versions of MGX INTERACTIVE projects,</li>
+          <li>remove, hide, or alter any copyright notices, credits, or branding,</li>
+          <li>use MGX INTERACTIVE code, scripts, or assets in your own projects,</li>
+          <li>bypass, disable, or modify any in-game systems, protections, or features.</li>
+        </ul>
+        <p>All MGX INTERACTIVE projects must be used exactly as they were published, without any changes. Any violation of this section will result in immediate termination of your right to use MGX INTERACTIVE projects, permanent ban from all MGX INTERACTIVE platforms, and legal action if the violation causes harm to MGX INTERACTIVE or its users.</p>
+
+        <h4>7. Content Warning</h4>
+        <p>Some projects may contain:</p>
+        <ul>
+          <li>flashing lights and fast movement (epilepsy warning),</li>
+          <li>strong language,</li>
+          <li>horror or unsettling themes.</li>
+        </ul>
+        <p>User discretion is advised.</p>
+
+        <h4>8. Intellectual Property</h4>
+        <p>All projects, code, and assets created by MGX INTERACTIVE remain the property of their creator unless stated otherwise. You may NOT claim authorship of these projects, redistribute them as your own, sell them or any part of them, or use them for commercial purposes without written permission.</p>
+
+        <h4>9. Purpose</h4>
+        <p>The purpose of MGX INTERACTIVE is simple: to create games and experiments. Nothing more, nothing less. Every project is made for fun, learning, and creativity — not to cause harm.</p>
+
+        <h4>10. Changes to These Terms</h4>
+        <p>These terms may be updated at any time. The latest version will always be available on the official MGX INTERACTIVE page. Continued use of any project means you accept the current version.</p>
+
+        <h4>11. Contact</h4>
+        <p>For questions, feedback, or collaboration, reach out through the official GitHub or itch.io page.</p>
+      </div>
+    </section>
+  </div>
 </main>
 
 <footer>
-  <p>© 2026 MGX Interactive. All rights reserved.</p>
+  <p id="footer-legal">© 2026 MGX Interactive. All rights reserved.</p>
+  <p class="studio">MGX INTERACTIVE 2026</p>
 </footer>
 
 <script>
-const texts = {
-  en: {
-    tagline: "Games. Tools. Est. 2026.",
-    btnItch: "VISIT OUR ITCH.IO",
-    secGames: "Games",
-    furyMeta: "Pseudo-3D Project",
-    furyDesc: 'It started with a dream of creating a game like GTA. However, I knew that writing such a massive game was impossible. So I made a smaller, pseudo-3D game, but the name "Fury" stayed. Now <span class="highlight">MGX_FURY3D</span> is a tribute to that dream – born from the ambition to do something big, even if we start with small steps.',
-    secEngine: "Future Engine",
-    engineTitle: "From Python to HTML",
-    engineDesc: 'On <span class="highlight">October 20, 2026</span>, we are officially starting work on a new engine. Instead of using Python, we are switching to HTML to create full 3D games directly in the browser. This marks a new chapter for MGX Interactive.',
-    secName: "The Name",
-    nameTitle: 'Why "MGX"?',
-    nameDesc: 'The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.',
-    secAbout: "About the Studio",
-    aboutTitle: "Behind MGX",
-    aboutDesc: '<span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. Did you know that this is a <span class="highlight">one-person studio</span>? It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.',
-    aboutPl: '<span class="highlight">Fun fact:</span> Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.',
-    footer: "© 2026 MGX Interactive. All rights reserved."
-  },
-  pl: {
-    tagline: "Gry. Narzędzia. Od 2026.",
-    btnItch: "ODWIEDŹ NASZE ITCH.IO",
-    secGames: "Gry",
-    furyMeta: "Projekt Pseudo-3D",
-    furyDesc: 'Zaczęło się od marzenia o stworzeniu gry pokroju GTA. Wiedziałem jednak, że napisanie tak ogromnej gry jest niemożliwe. Zrobiłem więc mniejszą grę w pseudo-3D, ale nazwa "Fury" została. Teraz <span class="highlight">MGX_FURY3D</span> to hołd dla tamtego marzenia – zrodzony z ambicji, by zrobić coś wielkiego, choć zaczynamy od małych kroków.',
-    secEngine: "Przyszły Silnik",
-    engineTitle: "Z Pythona na HTML",
-    engineDesc: 'W dniu <span class="highlight">20 października 2026 r.</span> oficjalnie rozpoczynamy pracę nad nowym silnikiem. Zamiast używać Pythona, przesiadamy się na HTML, aby tworzyć pełnoprawne gry 3D bezpośrednio w przeglądarce. To otwiera nowy rozdział dla MGX Interactive.',
-    secName: "Nazwa",
-    nameTitle: 'Skąd "MGX"?',
-    nameDesc: 'Nazwa <span class="highlight">MGX</span> nie pochodzi od żadnej istniejącej strony ani firmy. Została wymyślona przez twórcę, <span class="highlight">Miloo</span> (znanego też jako Milex), jako oryginalny pomysł na studio. Dopiero później okazało się, że istnieją inne podmioty o nazwie "MGX" (np. firmy technologiczne, inwestycyjne czy filmowe). <span class="highlight">MGX Interactive</span> jest w pełni niezależnym projektem i nie ma z nimi nic wspólnego.',
-    secAbout: "O Studiu",
-    aboutTitle: "Za kulisami MGX",
-    aboutDesc: '<span class="highlight">MGX Interactive</span> zostało założone w 2026 roku przez <span class="highlight">Miloo</span>. Czy wiesz, że to studio tworzone przez <span class="highlight">jedną osobę</span>? To w pełni niezależny projekt, który stawia na lekkie, szybkie i prywatne rozwiązania. Tworzymy gry, eksperymentujemy z językami programowania i budujemy rzeczy, których sami chcemy używać. Bez telemetrii, bez wielkich korporacji, po prostu robimy swoje.',
-    aboutPl: '<span class="highlight">Ciekawostka:</span> Mimo że wszystko tutaj jest po angielsku, samo studio jest <span class="highlight">w 100% polskie</span>.',
-    footer: "© 2026 MGX Interactive. Wszelkie prawa zastrzeżone."
+(function () {
+  'use strict';
+
+  var audioCtx = null;
+  var soundEnabled = true;
+
+  function initAudio() {
+    if (!audioCtx) {
+      try {
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      } catch (e) {}
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
   }
-};
 
-function setLang(lang) {
-  document.getElementById('tagline').innerHTML = texts[lang].tagline;
-  document.getElementById('btn-itch').innerHTML = texts[lang].btnItch;
-  document.getElementById('sec-games').innerHTML = texts[lang].secGames;
-  document.getElementById('fury-meta').innerHTML = texts[lang].furyMeta;
-  document.getElementById('fury-desc').innerHTML = texts[lang].furyDesc;
-  document.getElementById('sec-engine').innerHTML = texts[lang].secEngine;
-  document.getElementById('engine-title').innerHTML = texts[lang].engineTitle;
-  document.getElementById('engine-desc').innerHTML = texts[lang].engineDesc;
-  document.getElementById('sec-name').innerHTML = texts[lang].secName;
-  document.getElementById('name-title').innerHTML = texts[lang].nameTitle;
-  document.getElementById('name-desc').innerHTML = texts[lang].nameDesc;
-  document.getElementById('sec-about').innerHTML = texts[lang].secAbout;
-  document.getElementById('about-title').innerHTML = texts[lang].aboutTitle;
-  document.getElementById('about-desc').innerHTML = texts[lang].aboutDesc;
-  document.getElementById('about-pl').innerHTML = texts[lang].aboutPl;
-  document.querySelector('footer p').innerHTML = texts[lang].footer;
-  
-  document.getElementById('btn-en').classList.remove('active');
-  document.getElementById('btn-pl').classList.remove('active');
-  document.getElementById('btn-' + lang).classList.add('active');
-  
-  localStorage.setItem('mgx_lang', lang);
-}
+  function playTone(freq, dur, vol, type) {
+    if (!soundEnabled) return;
+    initAudio();
+    if (!audioCtx) return;
 
-const savedLang = localStorage.getItem('mgx_lang') === 'pl' ? 'pl' : 'en';
-setLang(savedLang);
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    var now = audioCtx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(vol, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(now);
+    osc.stop(now + dur);
+  }
+
+  function playHover() {
+    playTone(1200, 0.04, 0.15, 'sine');
+  }
+
+  function playClick() {
+    playTone(1500, 0.06, 0.25, 'sine');
+    setTimeout(function () { playTone(1900, 0.08, 0.2, 'sine'); }, 30);
+  }
+
+  window.toggleSound = function () {
+    soundEnabled = !soundEnabled;
+    var btn = document.getElementById('btn-sound');
+    if (soundEnabled) {
+      btn.classList.add('active');
+      btn.innerHTML = 'SOUND ON';
+      playClick();
+    } else {
+      btn.classList.remove('active');
+      btn.innerHTML = 'SOUND OFF';
+    }
+  };
+
+  window.switchView = function (viewId) {
+    document.querySelectorAll('.view').forEach(function (el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('view-' + viewId).classList.add('active');
+    
+    document.querySelectorAll('.nav-switch button').forEach(function (el) {
+      el.classList.remove('active');
+    });
+    document.getElementById('btn-' + viewId).classList.add('active');
+
+    playClick();
+  };
+
+  var texts = {
+    en: {
+      tagline: "Independent game studio. Est. 2026.",
+      btnItch: "VISIT OUR ITCH.IO",
+      secName: "The Name",
+      nameTitle: 'Why "MGX"?',
+      nameDesc: 'The name <span class="highlight">MGX</span> does not come from any existing website or company. It was invented by the creator, <span class="highlight">Miloo</span> (also known as Milex), as an original idea for a studio. Only later did it turn out that other entities named "MGX" exist (e.g., tech, investment, or film companies). <span class="highlight">MGX Interactive</span> is a fully independent project and has nothing to do with them.',
+      secAbout: "About the Studio",
+      aboutTitle: "Behind MGX",
+      aboutDesc: '<span class="highlight">MGX Interactive</span> was founded in 2026 by <span class="highlight">Miloo</span>. It is a fully independent project focused on lightweight, fast, and private solutions. We create games, experiment with programming languages, and build things we want to use ourselves. No telemetry, no big corporations, just doing our thing.',
+      tileSoloTitle: "One Creator",
+      tileSoloDesc: 'The entire <span class="red-brand">MGX Interactive brand</span> was founded and is managed by a single person.',
+      tilePlTitle: "100% Polish",
+      tilePlDesc: 'Although everything here is in English, the studio itself is <span class="highlight">100% Polish</span>.',
+      footer: "© 2026 MGX Interactive. All rights reserved."
+    },
+    pl: {
+      tagline: "Niezależne studio gier. Od 2026.",
+      btnItch: "ODWIEDŹ NASZE ITCH.IO",
+      secName: "Nazwa",
+      nameTitle: 'Skąd "MGX"?',
+      nameDesc: 'Nazwa <span class="highlight">MGX</span> nie pochodzi od żadnej istniejącej strony ani firmy. Została wymyślona przez twórcę, <span class="highlight">Miloo</span> (znanego też jako Milex), jako oryginalny pomysł na studio. Dopiero później okazało się, że istnieją inne podmioty o nazwie "MGX" (np. firmy technologiczne, inwestycyjne czy filmowe). <span class="highlight">MGX Interactive</span> jest w pełni niezależnym projektem i nie ma z nimi nic wspólnego.',
+      secAbout: "O Studiu",
+      aboutTitle: "Za kulisami MGX",
+      aboutDesc: '<span class="highlight">MGX Interactive</span> zostało założone w 2026 roku przez <span class="highlight">Miloo</span>. To w pełni niezależny projekt, który stawia na lekkie, szybkie i prywatne rozwiązania. Tworzymy gry, eksperymentujemy z językami programowania i budujemy rzeczy, których sami chcemy używać. Bez telemetrii, bez wielkich korporacji, po prostu robimy swoje.',
+      tileSoloTitle: "Jedna Osoba",
+      tileSoloDesc: 'Cała marka <span class="red-brand">MGX Interactive</span> została założona i jest zarządzana przez jedną osobę.',
+      tilePlTitle: "100% Polska",
+      tilePlDesc: 'Mimo że wszystko tutaj jest po angielsku, samo studio jest <span class="highlight">w 100% polskie</span>.',
+      footer: "© 2026 MGX Interactive. Wszelkie prawa zastrzeżone."
+    }
+  };
+
+  var fields = [
+    "tagline", "btn-itch", "sec-name", "name-title", "name-desc",
+    "sec-about", "about-title", "about-desc", "tile-solo-title", "tile-solo-desc", "tile-pl-title", "tile-pl-desc"
+  ];
+
+  window.setLang = function (lang) {
+    var t = texts[lang];
+    var map = {
+      "tagline": t.tagline,
+      "btn-itch": t.btnItch,
+      "sec-name": t.secName,
+      "name-title": t.nameTitle,
+      "name-desc": t.nameDesc,
+      "sec-about": t.secAbout,
+      "about-title": t.aboutTitle,
+      "about-desc": t.aboutDesc,
+      "tile-solo-title": t.tileSoloTitle,
+      "tile-solo-desc": t.tileSoloDesc,
+      "tile-pl-title": t.tilePlTitle,
+      "tile-pl-desc": t.tilePlDesc
+    };
+
+    for (var i = 0; i < fields.length; i++) {
+      var el = document.getElementById(fields[i]);
+      if (el) el.innerHTML = map[fields[i]];
+    }
+
+    document.getElementById("footer-legal").innerHTML = t.footer;
+
+    document.getElementById("btn-en").classList.remove("active");
+    document.getElementById("btn-pl").classList.remove("active");
+    document.getElementById("btn-" + lang).classList.add("active");
+
+    document.documentElement.lang = lang;
+
+    try {
+      localStorage.setItem("mgx_lang", lang);
+    } catch (e) {}
+  };
+
+  var saved = "en";
+  try {
+    saved = localStorage.getItem("mgx_lang") === "pl" ? "pl" : "en";
+  } catch (e) {}
+
+  setLang(saved);
+
+  var hoverables = document.querySelectorAll("button, .hero-btn, .card, .tile, .logo-container");
+  for (var i = 0; i < hoverables.length; i++) {
+    hoverables[i].addEventListener("mouseenter", function (e) {
+      if (e.target.classList.contains("clicking")) return;
+      playHover();
+    });
+  }
+
+  var clickables = document.querySelectorAll("button, .hero-btn");
+  for (var j = 0; j < clickables.length; j++) {
+    clickables[j].addEventListener("mousedown", function () {
+      this.classList.add("clicking");
+      setTimeout(function() { this.classList.remove("clicking"); }.bind(this), 150);
+    });
+  }
+
+  document.addEventListener("click", function () {
+    initAudio();
+  }, { once: true });
+
+})();
 </script>
 
 </body>
